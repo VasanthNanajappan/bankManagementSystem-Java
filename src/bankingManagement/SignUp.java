@@ -22,7 +22,7 @@ public class SignUp extends JFrame implements ActionListener {
     SignUp(){
         super("APPLICATION FORM");
 
-        ImageIcon i1=new ImageIcon(getClass().getResource("/icons/bank.png"));
+        ImageIcon i1=new ImageIcon(getClass().getResource("/icons/Bank.png"));
         Image i2= i1.getImage().getScaledInstance(100,100,Image.SCALE_DEFAULT);
         ImageIcon i3=new ImageIcon(i2);
         JLabel image=new JLabel(i3);
@@ -130,10 +130,6 @@ public class SignUp extends JFrame implements ActionListener {
         labelMb.setBounds(100,440,200,30);
         add(labelMb);
 
-//        textMb=new JTextField();
-//        textMb.setFont(new Font("Raleway",Font.BOLD,14));
-//        textMb.setBounds(300,440,400,30);
-//        add(textMb);
 
         r3=new JRadioButton("Married");
         r3.setFont(new Font("Raleway",Font.BOLD,14));
@@ -184,7 +180,7 @@ public class SignUp extends JFrame implements ActionListener {
         add(textCity);
 
         //PIN CODE
-        JLabel labelPincode=new JLabel("City :");
+        JLabel labelPincode=new JLabel("Pincode :");
         labelPincode.setFont(new Font("Raleway",Font.BOLD,20));
         labelPincode.setForeground(Color.BLACK);
         labelPincode.setBounds(100,590,200,30);
@@ -226,10 +222,60 @@ public class SignUp extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        //here we are going to get data from user and store it in database
 
+        String formno=first;
+        String name=textName.getText();
+        String fname=textFName.getText();
+        String dob=((JTextField) dateChooser.getDateEditor().getUiComponent()).getText();//this is for extracting date from the calendar
+
+        String gen=null;
+        //if we used RADIO button we need to declare like this!!
+        if(r1.isSelected()){
+            gen="Male";
+        }else if(r2.isSelected()){
+            gen="Female";
+        }else{
+            gen="others";
+        }
+
+        String email=textEmail.getText();
+
+        String marry=null;
+        if(r3.isSelected()){
+            marry="Married";
+        }else if(r4.isSelected()){
+            marry="Un-Married";
+        }else if(r5.isSelected()){
+            marry="Other";
+        }
+
+        String address=textAddress.getText();
+        String city=textCity.getText();
+        String pincode=textPincode.getText();//we are extracting data using getText();
+        String state=textState.getText();
+
+        //we have created a database ,extracted the value!
+        //Now we have to store the data in database!
+        try{
+            if(textName.getText().equals(" ")){
+                JOptionPane.showMessageDialog(null,"Fill all the details required!");//it is used to display the error message!
+            }else{
+                Con con1=new Con();//Con is an Object
+                String q="insert into signup values('"+formno+"','"+name+"','"+fname+"','"+dob+"','"+gen+"','"+email+"','"+marry+"','"+address+"','"+city+"','"+pincode+"','"+state+"')";//our data are stored in the database here, signup here is the name of the database
+                con1.statement.executeUpdate(q);//used to execute the query
+                new Signup2(first);//after storing all the details we need to move to the next page! and we are passing the Form_No as a parameter
+                setVisible(false);//then set the current signup page to false!
+            }
+        }catch (Exception E){
+            E.printStackTrace();;
+        }
     }
 
     public static void main(String[] args) {
         new SignUp();
     }
+    //Con - it creates a custom class to handle database queries or connections
+    //insert into signup values - it is an sql command used to add new row into give table, It assumes the table has columns that match the data being inserted.
+    //executeUpdate(q): This method is used for executing SQL statements that modify the database (such as INSERT, UPDATE, or DELETE). It returns the number of rows affected by the query.
 }
