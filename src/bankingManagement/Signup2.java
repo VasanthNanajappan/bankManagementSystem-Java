@@ -146,6 +146,10 @@ public class Signup2 extends JFrame implements ActionListener {
         r2.setBounds(460,490,100,30);
         add(r2);
 
+        ButtonGroup buttonGroup=new ButtonGroup();
+        buttonGroup.add(r1);
+        buttonGroup.add(r2);
+
         //EXISTING-ACCOUNT
         JLabel l11=new JLabel("Existing Account :");
         l11.setFont(new Font("Raleway",Font.BOLD,18));
@@ -164,11 +168,9 @@ public class Signup2 extends JFrame implements ActionListener {
         r4.setBounds(460,540,100,30);
         add(r4);
 
-        ButtonGroup buttonGroup=new ButtonGroup();
-        buttonGroup.add(r1);
-        buttonGroup.add(r2);
-        buttonGroup.add(r3);
-        buttonGroup.add(r4);
+       ButtonGroup buttonGroup1=new ButtonGroup();
+        buttonGroup1.add(r3);
+        buttonGroup1.add(r4);
 
 
         //FORM-NO
@@ -200,7 +202,44 @@ public class Signup2 extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String rel=(String) comboBox.getSelectedItem();
+        String cat=(String) comboBox2.getSelectedItem();
+        String inc=(String) comboBox3.getSelectedItem();
+        String edu=(String) comboBox4.getSelectedItem();
+        String occ=(String) comboBox5.getSelectedItem();
 
+        String pan=textField.getText();
+        String aadhar=aadharfield.getText();
+
+        //Radio button
+        String sencit=" ";
+        if(r1.isSelected()){
+            sencit="yes";
+        }else if(r2.isSelected()){
+            sencit="No";
+        }
+
+        String existingac=" ";
+        if(r3.isSelected()){
+            existingac="yes";
+        }else if(r4.isSelected()){
+            existingac="no";
+        }
+
+        try{
+            if(textField.getText().equals("")||aadharfield.getText().equals("")){
+                JOptionPane.showMessageDialog(null,"Fill all the details required!");
+            }else {
+                Con con2 = new Con();
+                String q = "insert into signuptwo values('" + formno + "','" + rel + "','" + cat + "','" + inc + "','" + edu + "','" + occ + "','" + pan + "','" + aadhar + "','" + sencit + "','" + existingac + "')";
+
+                con2.statement.executeUpdate(q);
+                new Signup3(formno);//we are passing the form number to Signup3 page
+                setVisible(false);
+            }
+        }catch (Exception E){
+            E.printStackTrace();
+        }
     }
 
     public static void main(String[] args){

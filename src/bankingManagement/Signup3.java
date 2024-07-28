@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class Signup3 extends JFrame implements ActionListener {
     JRadioButton r1,r2,r3,r4;
@@ -11,8 +12,12 @@ public class Signup3 extends JFrame implements ActionListener {
     JCheckBox c1,c2,c3,c4,c5,c6;
 
     JButton s,c;
+
+    String formno;
     //Constructor
-    Signup3(){
+    Signup3(String formno){
+        this.formno=formno;
+
         ImageIcon i1=new ImageIcon(getClass().getResource("/icons/bank.png"));
         Image i2=i1.getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT);
         ImageIcon i3=new ImageIcon(i2);
@@ -172,6 +177,7 @@ public class Signup3 extends JFrame implements ActionListener {
         s.setFont(new Font("Raleway",Font.BOLD,14));
         s.setBackground(Color.BLACK);
         s.setForeground(Color.white);
+        s.addActionListener(this);//here this means current instance(Signup3)'s button! and acts to listen for the button event
         s.setBounds(250,720,100,30);
         add(s);
 
@@ -180,6 +186,7 @@ public class Signup3 extends JFrame implements ActionListener {
         c.setFont(new Font("Raleway",Font.BOLD,14));
         c.setBackground(Color.BLACK);
         c.setForeground(Color.white);
+        c.addActionListener(this);
         c.setBounds(420,720,100,30);
         add(c);
 
@@ -194,10 +201,87 @@ public class Signup3 extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String acctype=" ";
+        if(r1.isSelected()){
+            acctype="Savings Account";
+        }else if(r2.isSelected()){
+            acctype="Fixed Deposit Account ";
+        }else if(r3.isSelected()){
+            acctype="Current Account";
+        }else if (r4.isSelected()){
+            acctype="Recurring Deposit Account";
+        }
 
+        //For creating a ATM card number we need to generate a random number
+        Random ran=new Random();
+        long first7=(ran.nextLong()%90000000L)+1409963000000000L;//card num format,here after 9 has 7zeros so it gives us seven digit number
+        String cardno=""+Math.abs(first7);
+
+        //For PIN generation
+        long first3=(ran.nextLong() % 9000L)+1000L;
+        String pin=""+Math.abs(first3);
+
+        //Services
+        String facility="";
+        int facilityCount=0;//for tracking of commas to insert
+        if (c1.isSelected()) {
+            if(facilityCount>0) facility+=",";
+            facility += "ATM Card";
+            facilityCount++;
+        }
+        if (c2.isSelected()) {
+            if(facilityCount>0) facility+=",";
+            facility += "Internet Banking, ";
+            facilityCount++;
+        }
+        if (c3.isSelected()) {
+            if(facilityCount>0) facility+=",";
+            facility += "Mobile Banking, ";
+            facilityCount++;
+        }
+        if (c4.isSelected()) {
+            if(facilityCount>0) facility+=",";
+            facility += "Email Alerts, ";
+            facilityCount++;
+        }
+        if (c5.isSelected()) {
+            if(facilityCount>0) facility+=",";
+            facility += "Cheque Book, ";
+            facilityCount++;
+        }
+        if (c6.isSelected()) {
+            if(facilityCount>0) facility+=",";
+            facility += "E-Statement, ";
+            facilityCount++;
+        }
+
+
+        //Storing
+        try{
+            if(e.getSource()==s){//e is used to denote the actionevent,mouseevent,keyevent etc..
+                if(acctype.equals("")){
+                    JOptionPane.showMessageDialog(null,"Fill all the fields!!");
+                }else{
+                    Con con3=new Con();
+                    String q1="insert into signupthree values('"+formno+"','"+acctype+"','"+cardno+"','"+pin+"','"+facility+"')";
+                    String q2="insert into login values('"+formno+"','"+cardno+"','"+pin+"')";
+                    con3.statement.executeUpdate(q1);
+                    con3.statement.executeUpdate(q2);
+                    JOptionPane.showMessageDialog(null,"Card_No:"+cardno+"\n Pin_No:"+pin);
+                    setVisible(false);
+                }
+            }else if(e.getSource()==c){
+                System.exit(0);//this method is used to terminate the JVM(Java virtual Machine)
+                //here zero(0) value indicates normal termination
+                //non-zero value indicates upNormal termination
+            }
+
+        }catch(Exception E){
+            E.printStackTrace();
+        }
     }
 
     public static void main(String[] args){
-        new Signup3();
+        new Signup3(" ");
     }
 }
