@@ -134,7 +134,8 @@ public class Login extends JFrame implements ActionListener {
                 textField2.setText("");
                 passwordField3.setText("");
             } else if (e.getSource()==button3) {
-                
+                new SignUp();
+                setVisible(false);//for login page
             }
         }catch (Exception E){
             E.printStackTrace();//it makes error to visible

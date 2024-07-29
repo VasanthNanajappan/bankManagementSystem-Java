@@ -167,9 +167,9 @@ public class Signup3 extends JFrame implements ActionListener {
         l12.setBounds(700,10,100,30);
         add(l12);
 
-        JLabel l13=new JLabel();
+        JLabel l13=new JLabel(formno);
         l13.setFont(new Font("Raleway",Font.BOLD,14));
-        l13.setBounds(760,10,100,30);
+        l13.setBounds(770,10,100,30);
         add(l13);
 
         //SUBMIT-Button

@@ -44,6 +44,7 @@ public class Deposit extends JFrame implements ActionListener {
          b1.setFont(new Font("Raleway",Font.BOLD,16));
          b1.setForeground(Color.white);
          b1.setBackground(new Color(65,125,128));
+         b1.addActionListener(this);
          b1.setBounds(700,362,150,35);
          image.add(b1);
 
@@ -51,6 +52,7 @@ public class Deposit extends JFrame implements ActionListener {
          b2.setFont(new Font("Raleway",Font.BOLD,16));
          b2.setForeground(Color.WHITE);
          b2.setBackground(new Color(65,125,128));
+         b2.addActionListener(this);
          b2.setBounds(700,406,150,35);
          image.add(b2);
 
@@ -74,7 +76,20 @@ public class Deposit extends JFrame implements ActionListener {
             Date date=new Date();
 
             if (e.getSource()==b1){//e denotes event
+                if(textField.getText().equals("")){
+                    JOptionPane.showMessageDialog(null,"Please enter the amount you want to deposit!!");
+                }else {
+                    Con c=new Con();
+                    String q="insert into bank values('"+pin+"','"+date+"','Deposit','"+amount+"')";
+                    //In the above line Deposit was unclosed within single quote that means it is an string literal, Single quotes indicate it's a text value.
+                    //Ex: INSERT INTO bank VALUES ('1234', '2024-07-29', 'Deposit', '5000');
+                    c.statement.executeUpdate(q);
 
+                    JOptionPane.showMessageDialog(null,"Rs."+amount+" has been deposited successfully!");
+                    setVisible(false);
+                }
+            }else if(e.getSource()==b2){
+                setVisible(false);
             }
         }catch (Exception E){
             E.printStackTrace();

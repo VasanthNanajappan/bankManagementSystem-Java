@@ -264,7 +264,7 @@ public class SignUp extends JFrame implements ActionListener {
                 Con con1=new Con();//Con is an Object
                 String q="insert into signup values('"+formno+"','"+name+"','"+fname+"','"+dob+"','"+gen+"','"+email+"','"+marry+"','"+address+"','"+city+"','"+pincode+"','"+state+"')";//our data are stored in the database here, signup here is the name of the database
                 con1.statement.executeUpdate(q);//used to execute the query
-                new Signup2(first);//after storing all the details we need to move to the next page! and we are passing the Form_No as a parameter
+                new Signup2(formno);//after storing all the details we need to move to the next page! and we are passing the Form_No as a parameter
                 setVisible(false);//then set the current signup page to false!
             }
         }catch (Exception E){
