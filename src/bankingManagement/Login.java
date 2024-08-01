@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.sql.ResultSet;
 
 import javax.swing.*;
 import javax.swing.JFrame;
@@ -54,7 +55,7 @@ public class Login extends JFrame implements ActionListener {
         label1.setBounds(230,125,450,40);
         add(label1);
 
-        label2=new JLabel("card No:");
+        label2=new JLabel("Card No:");
         label2.setForeground(Color.white);
         label2.setFont(new Font("Ralway",Font.BOLD,28));
         label2.setBounds(150,190,375,30);
@@ -128,7 +129,20 @@ public class Login extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try{
             if(e.getSource()==button1){
+                Con c1=new Con();
+                String cardNo=textField2.getText();
+                String pin=passwordField3.getText();
+                //checking that cardno and pinno matches!
+                String q="select * from login where card_number=='"+cardNo+"'and pin_number=='"+pin+"'";
+                //Updatequery for updating it into database
+                ResultSet resultSet=c1.statement.executeQuery(q);//it gets stored in result set
 
+                //used to check whether data is present inside or not!
+                if(resultSet.next()){
+                    setVisible(false);
+                }else {
+                    new Main_Class(pin);
+                }
             } else if (e.getSource()==button2){
                 //CLEAR-function
                 textField2.setText("");

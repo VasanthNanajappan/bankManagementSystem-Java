@@ -7,8 +7,12 @@ import java.awt.event.ActionListener;
 
 public class Main_Class extends JFrame implements ActionListener {
     JButton b1,b2,b3,b4,b5,b6,b7;
+
+    String pin;
     //Constructor
-     Main_Class(){
+     Main_Class(String pin){
+         //we are passing the pin from login screen
+         this.pin=pin;
 
          //Image
          ImageIcon i1=new ImageIcon(getClass().getResource("/icons/atm2.png"));
@@ -98,6 +102,6 @@ public class Main_Class extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new Main_Class();
+        new Main_Class("");
     }
 }
